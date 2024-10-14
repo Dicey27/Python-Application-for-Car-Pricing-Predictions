@@ -1,1 +1,1 @@
-Bachelor's degree project
+Bachelor's degree project.Python App
