@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Listings</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #000000;
+        }
+        th {
+            background-color: #ADD8E6;
+            color: rgb(0, 0, 0);
+        }
+        tr:hover {background-color: #f5f5f5;}
+        .button {
+            background-color: #ADD8E6; /* Green */
+            border: none;
+            color: rgb(0, 0, 0);
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Car Listings</h1>
+    <table>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Price</th>
+            <th>Phone number</th>
+            
+        </tr>
+        {% for listing in listings %}
+        <tr>
+            <td>{{ listing[0] }}</td>
+            <td>{{ listing[1] }}</td>
+            <td>{{ listing[2] }}</td>
+            <td>{{ listing[3] }} €</td>
+            <td>{{ listing[4] }} </td>
+           
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('home') }}" onclick="toggleSidebar()" class="button">Back to home</a>
+</body>
+</html>

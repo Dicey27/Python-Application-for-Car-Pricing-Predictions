@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Listing</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { display: flex; margin: 20px; }
+        .image-gallery { width: 60%; position: relative; }
+        .main-image { width: 100%; display: block; }
+        .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px; /* increased size */
+    color: white; /* changed color to white for visibility */
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+    padding: 20px; /* padding to create a bigger clickable area */
+    border-radius: 50%; /* circular background */
+    cursor: pointer;
+    user-select: none;
+    z-index: 10; /* ensure it's above the image */
+}
+        .arrow.left { left: 10px; }
+        .arrow.right { right: 10px; }
+        .details { width: 40%; padding-left: 20px; border-left: 1px solid #ccc; }
+        .details h1 { color: #333; }
+        .details p { line-height: 1.6; }
+        .contact-seller { display: block; text-align: center; background-color: #ADD8E6; color: rgb(0, 0, 0); padding: 10px 20px; margin-top: 20px; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="image-gallery">
+        <!-- Main Image -->
+        <img id="mainImage" src="{{ url_for('static', filename='images/daciaduster.jpg') }}" alt="Car Image" class="main-image">       
+        <!-- Arrows -->
+        <div class="arrow left" onclick="changeImage(-1)">&#10094;</div>
+        <div class="arrow right" onclick="changeImage(1)">&#10095;</div>
+    </div>
+
+    <div class="details">
+        <h1>Dacia Duster</h1>
+        <p><strong>Year:</strong> 2023</p>
+        <p><strong>Kilometers:</strong> 37,700 km</p>
+        <p><strong>Engine:</strong> 1,332 cc</p>
+        <p><strong>Type of fuel:</strong> Petrol</p>
+        <p><strong>Price:</strong> 21,900 EUR</p>
+        <p><strong>Seller:</strong>AutoEstimateHub</p>
+        <p><strong>Location:</strong>Strada Alexandru Ioan Cuza 13, Craiova</p>
+        <a href="" class="contact-seller">Contact Seller</a>
+        <a href="{{ url_for('home') }}" class="contact-seller">Back to menu</a>
+    </div>
+</div>
+
+<script>
+    var images = [
+        "{{ url_for('static', filename='images/daciaduster.jpg') }}",
+        "{{ url_for('static', filename='images/daciaduster-1.jpg') }}",
+        "{{ url_for('static', filename='images/daciaduster-2.jpg') }}" 
+       
+    ];
+
+    var currentIndex = 0;
+
+    function changeImage(direction) {
+        // Update the current index based on direction
+        currentIndex += direction;
+
+        // If the new index is out of bounds, wrap it around to the other end of the array
+        if (currentIndex < 0) {
+            currentIndex = images.length - 1; // Wrap to last image if index goes below 0
+        } else if (currentIndex >= images.length) {
+            currentIndex = 0; // Wrap to first image if index goes past the last image
+        }
+
+        // Set the src of the main image to the new index
+        document.getElementById("mainImage").src = images[currentIndex];
+    }
+</script>
+
+</body>
+</html>

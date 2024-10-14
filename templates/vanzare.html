@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Car</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .input-display {
+            border: none;
+            border-bottom: 2px solid #ccc;
+            margin-top: 20px;
+            padding: 10px;
+            width: calc(100% - 20px);
+            display: block;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+        }
+
+        .input-display:focus {
+            outline: none;
+            border-bottom-color: #007BFF;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Sell Your Car</h2>
+        <input type="text" class="input-display" placeholder="Enter Make" id="make" onkeypress="handleKeyPress(event, 'model')">
+        <input type="text" class="input-display" placeholder="Enter Model" id="model" onkeypress="handleKeyPress(event, 'year')" style="display: none;">
+        <input type="number" class="input-display" placeholder="Enter Year" id="year" onkeypress="handleKeyPress(event, 'phone')" style="display: none;">
+        <input type="number" class="input-display" placeholder="Enter Phone Number" id="phone" onkeypress="handleKeyPress(event, 'price')" style="display: none;">
+        <input type="number" class="input-display" placeholder="Enter Asking Price" id="price" onkeypress="handleKeyPress(event, 'submit')" style="display: none;">
+        <center><button onclick="submitDetails()" id="submit" style="display: none;">Submit</button></center>
+        <h1></h1>
+        <a href="{{ url_for('home') }}" onclick="toggleSidebar()">Back to home</a>
+    </div>
+
+    <script>
+        function handleKeyPress(event, nextFieldId) {
+            if (event.key === 'Enter') {
+                const inputValue = event.target.value.trim();
+                if (inputValue) {
+                    event.preventDefault();
+                    document.getElementById(nextFieldId).style.display = 'block';
+                    if (nextFieldId === 'submit') {
+                        document.getElementById('submit').style.display = 'block';
+                    }
+                } else {
+                    alert('Please complete this field before proceeding.');
+                }
+            }
+        }
+
+        function submitDetails() {
+    const make = document.getElementById('make').value;
+    const model = document.getElementById('model').value;
+    const year = document.getElementById('year').value;
+    const price = document.getElementById('price').value;
+    const phone = document.getElementById('phone').value;
+    
+    // Check all fields are filled except user_id which we are currently skipping
+    if (make && model && year && price) {
+        fetch('/add_masini', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({make, model,year,price,phone})  // Not sending user_id
+        }).then(response => response.json())
+          .then(data => {
+            if (data.success) {
+                alert('Car added successfully!');
+                window.location.href = '/masinilavanzare.html'; // Redirect to listings page
+            } else {
+                alert('Failed to add car: ' + data.error);
+            }
+        });
+    } else {
+        alert('All fields must be completed.');
+    }
+}
+    </script>
+</body>
+</html>

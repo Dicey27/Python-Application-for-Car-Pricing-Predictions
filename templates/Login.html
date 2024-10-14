@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;
+            width: 300px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #ADD8E6;
+            color: rgb(0, 0, 0);
+            font-size: 16px;
+            margin-top: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a {
+            display: block;
+            margin-top: 12px;
+            text-align: center;
+            color: #000000;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .flashes {
+            color: #333;
+            background-color: #dc3545; /* Adjust color for different alert types */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <form method="post">
+        <center><h1>Login</h1></center>
+        Username: <input type="text" name="username" required><br>
+        <h1></h1>
+        Password: <input type="password" name="password" required><br>
+        <input type="submit" value="Login">
+        <a href="{{ url_for('home') }}">Back home</a>
+    </form>
+</body>
+</html>

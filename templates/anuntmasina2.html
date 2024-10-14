@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Listing</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { display: flex; margin: 20px; }
+        .image-gallery { width: 60%; position: relative; }
+        .main-image { width: 100%; display: block; }
+        .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px; /* increased size */
+    color: white; /* changed color to white for visibility */
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+    padding: 20px; /* padding to create a bigger clickable area */
+    border-radius: 50%; /* circular background */
+    cursor: pointer;
+    user-select: none;
+    z-index: 10; /* ensure it's above the image */
+}
+        .arrow.left { left: 10px; }
+        .arrow.right { right: 10px; }
+        .details { width: 40%; padding-left: 20px; border-left: 1px solid #ccc; }
+        .details h1 { color: #333; }
+        .details p { line-height: 1.6; }
+        .contact-seller { display: block; text-align: center; background-color: #ADD8E6; color: rgb(0, 0, 0); padding: 10px 20px; margin-top: 20px; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="image-gallery">
+        <!-- Main Image -->
+        <img id="mainImage" src="{{ url_for('static', filename='images/a42021.jpg') }}" alt="Car Image" class="main-image">       
+        <!-- Arrows -->
+        <div class="arrow left" onclick="changeImage(-1)">&#10094;</div>
+        <div class="arrow right" onclick="changeImage(1)">&#10095;</div>
+    </div>
+
+    <div class="details">
+        <h1>Audi A4</h1>
+        <p><strong>Year:</strong> 2021</p>
+        <p><strong>Kilometers:</strong> 168,500 km</p>
+        <p><strong>Engine:</strong> 1,968 cc</p>
+        <p><strong>Type of fuel:</strong>Diesel</p>
+        <p><strong>Price:</strong> 27,899 EUR</p>
+        <p><strong>Seller:</strong>AutoEstimateHub</p>
+        <p><strong>Location:</strong>Strada Alexandru Ioan Cuza 13, Craiova</p>
+        <a href="" class="contact-seller">Contact Seller</a>
+        <a href="{{ url_for('home') }}" class="contact-seller">Back to menu</a>
+    </div>
+</div>
+
+<script>
+    var images = [
+        "{{ url_for('static', filename='images/a42021.jpg') }}",
+        "{{ url_for('static', filename='images/a42021-1.jpg') }}",
+        "{{ url_for('static', filename='images/a42021-2.jpg') }}" 
+       
+    ];
+
+    var currentIndex = 0;
+
+    function changeImage(direction) {
+        
+        currentIndex += direction;
+
+        
+        if (currentIndex < 0) {
+            currentIndex = images.length - 1; 
+        } else if (currentIndex >= images.length) {
+            currentIndex = 0; 
+        }
+
+        
+        document.getElementById("mainImage").src = images[currentIndex];
+    }
+</script>
+
+</body>
+</html>

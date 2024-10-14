@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compare Your Car</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        #graph-container-1, #graph-container-2 {
+            width: 600px;
+            height: 400px;
+        }
+        input[type="text"], input[type="submit"], a.button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="submit"], a.button {
+            background-color: #000000;
+            color: white;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+            border: none;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover, a.button:hover {
+            background-color: #ADD8E6;
+            color: #000000;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        .slide {
+    display: none; 
+    width: 100%;
+    height: 100%;
+}
+
+.slider {
+    position: relative;
+    width: 600px; 
+    height: 400px; 
+}
+    </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="flex-container">
+        <form id="carForm" action="/compara" method="post">
+            <h2>Compare Your Car</h2>
+            <input type="text" id="marca" placeholder="Brand" name="marca" required>
+            <input type="text" id="model" placeholder="Model" name="model" required>
+            <input type="text" id="anul" placeholder="Year" name="anul" required>
+            <input type="text" id="kilometrajul" placeholder="Mileage" name="kilometrajul" required>
+            <input type="text" id="capacitatea_motorului" placeholder="Engine capacity" name="capacitatea_motorului" required>
+            <input type="text" id="tipul_de_combustibil" placeholder="Type of fuel" name="tipul_de_combustibil" required>
+            <input type="submit" value="Compare">
+            <a href="/" class="button"><center>Back to menu</center></a>
+        </form>
+        <div class="slider">
+            <div id="graph-container-1" class="slide" style="display: block;"></div>
+            <div id="graph-container-2" class="slide" style="display: none;"></div>
+            <button onclick="previousSlide()">Previous</button>
+            <button onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('carForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    document.getElementById('prevButton').style.display = 'inline-block';
+    document.getElementById('nextButton').style.display = 'inline-block';
+
+})
+        var slideIndex = 1;
+showSlides(slideIndex);
+
+function nextSlide() {
+    showSlides(slideIndex += 1);
+}
+
+function previousSlide() {
+    showSlides(slideIndex -= 1);
+}
+
+function showSlides(n) {
+    var slides = document.getElementsByClassName("slide");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (var i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    slides[slideIndex-1].style.display = "block";  
+}
+        document.addEventListener('DOMContentLoaded', function() {
+            var graphJSON_year = {{ graphJSON_year | safe }};
+            var graphJSON_mileage = {{ graphJSON_mileage | safe }};
+            Plotly.newPlot('graph-container-1', graphJSON_year.data, graphJSON_year.layout);
+            Plotly.newPlot('graph-container-2', graphJSON_mileage.data, graphJSON_mileage.layout);
+        });
+    </script>
+</body>
+</html>

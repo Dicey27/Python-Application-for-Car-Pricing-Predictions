@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Price Prediction</title>
+
+
+<style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #000000;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type=submit]:hover {
+            background-color: #ADD8E6;
+            color:#000000;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+    input[type='button'], button {
+        background-color: #000000; /* Green */
+        width: 100%;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    input[type='button']:hover, button:hover {
+        background-color: #ADD8E6;
+        color:#000000;
+    }
+</style>
+</head>
+<body>
+    <form action="/predict" method="post">
+        <h2>Please enter your car details</h2>
+        <label for="marca">Brand:</label>
+        <input type="text" id="marca" name="marca" required>
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required>
+        <label for="anul">Year:</label>
+        <input type="text" id="anul" name="anul" required>
+        <label for="kilometrajul">Mileage:</label>
+        <input type="text" id="kilometrajul" name="kilometrajul" required>
+        <label for="capacitatea_motorului">Engine capacity:</label>
+        <input type="text" id="capacitatea_motorului" name="capacitatea_motorului" required>
+        <label for="tipul_de_combustibil">Type of fuel:</label>
+        <input type="text" id="tipul_de_combustibil" name="tipul_de_combustibil" required>
+        
+    <input type="submit" value="Get your estimate value">
+    <!-- New button for displaying graphs -->
+    <a href="{{ url_for('home') }}" style="text-decoration: none;">
+      <input type="button" value="Back to menu">
+</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Inventory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #000000;
+        }
+        th {
+            background-color: #ADD8E6;
+            color: rgb(0, 0, 0);
+        }
+        .back-to-listings {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 5px 10px;
+            background-color: #ADD8E6;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Car Inventory</h1>
+    
+    <div class="table-container">
+        <div id="search-controls">
+            <a href="/" class="back-to-listings">Back to menu</a>
+        </div>
+        <table id="carTable">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Mileage</th>
+                    <th>Engine Capacity</th>
+                    <th>Type of Combustion</th>
+                    <th>Price (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in data %}
+                <tr>
+                    <td>{{ car[0] }}</td>
+                    <td>{{ car[1] }}</td>
+                    <td>{{ car[2] }}</td>
+                    <td>{{ car[3] }}</td>
+                    <td>{{ car[4] }}</td>
+                    <td>{{ car[5] }}</td>
+                    <td>{{ car[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch the initial data from the server and store it globally
+            let csvDataGlobal;
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    csvDataGlobal = data; // Assign the JSON data to the global variable
+                    // It appears that a function should be called here to handle the data
+                    // Example: displayCars(csvDataGlobal, 1);
+                });
+            // The displayCars function should be defined here if it is being used
+        });
+    </script>
+</body>
+</html>

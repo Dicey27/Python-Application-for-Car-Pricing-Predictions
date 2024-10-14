@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Listings</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+  }
+  
+  .car-link {
+    text-decoration: none;
+    color: inherit; 
+    display: block; 
+}
+
+
+  a.inventar-link {
+        text-decoration: none;
+        color: #000000; 
+        font-size: 24px; 
+    }
+
+    a.inventar-link:hover {
+        color: #ADD8E6; 
+    }
+
+    a.inventar-link h2 {
+        margin: 0; 
+        text-align: center; 
+        
+      }
+
+.header-banner-poza {
+  background-image: url('{{ url_for('static', filename='images/black.jpg') }}');
+  background-size: cover; /* Ensures the image covers the entire banner area */
+  background-position: top center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  width: 100%; /* Ensures the banner spans the entire width of the page */
+  height: 300px; /* Example height, adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
+}
+
+
+ .header-banner-poza h1 {
+  color: #fff; /* Change this to the color you want for your text */
+  font-size: 3em; /* Change this to the size you want for your text */
+  font-family: 'Arial', sans-serif; /* Optional: Change the font family as needed */
+  margin: 0; /* Remove default margins */
+}
+
+  .sidebar {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;    
+    padding-top: 60px;
+    transform: translateX(-250px); /* Hide sidebar off-screen */
+    transition: transform 0.6s;
+    height: 100%;
+    width: 250px;
+
+ }
+  .sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #dddddd;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .sidebar a:hover {
+    background-color: #ADD8E6;
+    color: #111;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    width: 250px;
+  }
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    position: fixed;
+    top: 10px;
+    z-index: 2;
+  }
+  .content {
+    transition: margin-left 0.5s;
+    padding: 100px;
+  }
+  .car {
+    background-color: #f8f8f8;
+    padding: 80px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .car img {
+  max-width: 75%; /* Reduces the image size to 80% of its container */
+  height: auto; /* Maintains the aspect ratio of the image */
+  border-radius: 8px;
+  display: block; /* Centers the image in the container */
+  margin: 0 auto; /* Adds automatic margins to center horizontally */
+}
+  
+  .featured {
+    text-align: center;
+  margin: 20px auto; /* Add top and bottom margin, and auto will center the box horizontally */
+  padding: 10px;
+  border: 2px solid #FFD700; /* Optional: if you want a border around the entire section */
+  width: 60%; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     /* Highlight featured cars */
+  }
+  .arrivals {
+    text-align: center;
+  margin: 20px auto; /* Add top and bottom margin, and auto will center the box horizontally */
+  padding: 10px;
+  border: 2px solid #55544f; /* Optional: if you want a border around the entire section */
+  width: 60%; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     /* Highlight featured cars */
+  }
+  .otherlistings {
+    text-align: center;
+  margin: 20px auto; /* Add top and bottom margin, and auto will center the box horizontally */
+  padding: 10px;
+  border: 2px solid #55544f; /* Optional: if you want a border around the entire section */
+  width: 60%; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     /* Highlight featured cars */
+  }
+  .section {
+    margin-bottom: 30px;
+  }
+  footer {
+    background-color: #333;
+    color: white; 
+    text-align: center; 
+    padding: 20px 0; 
+    position: static; 
+    bottom: 0; 
+    width: 100%; 
+  }
+  .carousel {
+  position: relative;
+  width: 100%; 
+  
+}
+
+.carousel-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: #333; 
+  color: white; 
+  border: none;
+  padding: 10px 15px; 
+  border-radius: 50%; 
+  width: 40px; 
+  height: 40px; 
+  text-align: center; 
+  line-height: px; 
+}
+
+
+.carousel-btn:hover {
+  background-color: #ADD8E6;
+}
+
+.carousel-btn.prev {
+  left: 260px; 
+}
+
+/* Style for right arrow button */
+.carousel-btn.next {
+  right: 260px; /* Position to the far right */
+}
+
+.carousel-btn::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Ensure it's behind the button text/icon */
+}
+
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2; /* Lower than the z-index of buttons */
+}
+
+.arrivals {
+  display: none; /* Hide all cars initially */
+  display: none; /* Hide all cars initially */
+  position: relative;
+}
+
+.arrivals.show {
+  display: block; /* Show the first car initially */
+  
+}
+.header-right {
+            position: absolute;
+            right: 110px;
+            top: 10px;
+            font-size: 26px;
+            color: #fff;  /* Assuming the header has a dark background */
+        }
+</style>
+</head>
+<body>
+
+  <div id="mySidebar" class="sidebar">
+    <a href="{{ url_for('home') }}" onclick="toggleSidebar()">Home</a>
+    <a href="{{ url_for('predict') }}" onclick="toggleSidebar()">Estimate value for you car</a>
+    <a href="{{ url_for('compare') }}" onclick="toggleSidebar()">Compare your car</a>
+    <a href="{{ url_for('graphs') }}" onclick="toggleSidebar()">Graphics</a>
+    <a href="{{ url_for('arbdecizie') }}" onclick="toggleSidebar()">Decision</a>
+    {% if not username %}  <!-- This line checks if 'username' is not set, indicating no user is logged in -->
+        <a href="{{ url_for('register') }}" onclick="toggleSidebar()">Register</a>
+        <a href="{{ url_for('login') }}" onclick="toggleSidebar()">Login</a>
+    {% else %}
+        <a href="{{ url_for('sell_car') }}" onclick="toggleSidebar()">Sell Your Car</a>
+        <a href="{{ url_for('masinilavanzare') }}" onclick="toggleSidebar()">See Listings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>  <!-- This link shows only when a user is logged in -->
+    {% endif %}
+</div>
+
+<button class="openbtn" onclick="toggleSidebar()">☰ Menu</button>
+
+<div class="header-banner-poza">
+  <h1>AutoEstimateHub</h1>
+  {% if username %}
+      <div class="header-right">
+          Welcome, {{ username }}
+      </div>
+  {% endif %}
+</div>
+
+<div class="content" id="home">
+  <h1><center>Welcome to Our Car Listings</center></h1>
+  
+  <div id="featured" class="section">
+    <h2><center>Featured Car of the Week</center></h2>
+    <div class="car featured">
+      <a href="{{ url_for('anuntmasina') }}" class="car-link">
+          <h3>2020 Mercedes-Benz E-Class</h3>
+          <p>Price: €57,120</p>
+          <img src="{{ url_for('static', filename='images/eclass2020.jpg') }}" alt="Car Image">
+
+          <p>Special Offer: Free maintenance for 1 year!</p>
+     </a>
+  </div>
+  </div>
+  
+  <div id="recent-arrivals" class="section">
+    <h2><center>Recent Arrivals</center></h2>
+    <div class="carousel">
+      <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+      <div class="carousel-inner">
+        <div class="car arrivals ">
+          <a href="{{ url_for('anuntmasina2') }}" class="car-link">
+              <h3>2021 Audi A4</h3>
+              <p>Price: €40,100</p>
+              <img src="{{ url_for('static', filename='images/a42021.jpg') }}" alt="2021 Audi A4">
+         </a>
+      </div>
+        <!-- Additional car divs can be added here -->
+        <div class="car arrivals">
+          <a href="{{ url_for('anuntmasina5') }}" class="car-link">
+              <h3>2020 Toyota Camry</h3>
+              <p>Price: €27,900</p>
+              <img src="{{ url_for('static', filename='images/camry2020.jpeg') }}" alt="2022 Toyota Camry">
+         </a>
+      </div>
+      </div>
+      <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+    </div>
+  </div>
+
+  <div id="reviews" class="section">
+    <h2>Customer Reviews and Testimonials</h2>
+    <p>"Absolutely love my new Audi A3 from here! The customer service was outstanding!" - Andrei Popescu</p>
+    <p>"Great selection and honest pricing. Highly recommend checking them out." - Gabriel Ioan</p>
+    <!-- Add more testimonials here -->
+  </div>
+  <h2><center>Other listings</center></h2>
+  <div class="car otherlistings">
+    <a href="{{ url_for('anuntmasina3') }}" class="car-link">
+        <h3>2023 Dacia Duster</h3>
+        <p>Price: €21,900</p>
+    </a>
+</div>
+
+<div class="car otherlistings">
+    <a href="{{ url_for('anuntmasina4') }}" class="car-link">
+        <h3>2018 Renault Clio</h3>
+        <p>Price: €9,500</p>
+    </a>
+</div>
+  {% if session['role'] == 'administrator' %}
+  <a href="{{ url_for('inventar') }}" class="inventar-link"><center>View our inventory</center></a>
+  {% endif %}
+  <!-- Add more car listings here -->
+</div>
+
+<script>
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function moveSlide(n) {
+  showSlides(slideIndex += n);
+}
+
+
+function showSlides(n) {
+  var i;
+  var slides = document.querySelectorAll(".carousel .arrivals");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slides[slideIndex-1].style.display = "block";  
+}
+
+function toggleSidebar() {
+    var sidebar = document.getElementById("mySidebar");
+    sidebar.classList.toggle("open");
+    var content = document.querySelector(".content");
+    content.style.marginLeft = sidebar.classList.contains("open") ? "250px" : "0";
+}
+</script>
+<footer>
+  &copy; 2024 DiaconescuEduard. All rights reserved.
+</footer>
+</body>
+</html>

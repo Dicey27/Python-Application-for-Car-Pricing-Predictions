@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Car Data Visualization</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row; /* Change to row to align buttons horizontally */
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #fff;
+        flex-wrap: wrap; /* In case of narrow screens, allow items to wrap */
+    }
+    h2 {
+        width: 100%; /* Make sure the header takes the full width */
+        text-align: center; /* Center the header text */
+        margin: 20px 0; /* Add some margin to the header */
+    }
+    button {
+        background-color: #000000; /* BLue */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px; /* Adjust margins for spacing */
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #ADD8E6;
+        color:#000000
+    }
+    .button-container {
+        display: flex; /* Add flex layout to the container */
+        justify-content: center; /* Center buttons horizontally */
+        flex-wrap: wrap; /* Allow the buttons to wrap */
+        margin: 20px 0; /* Add some vertical margin */
+    }
+    a.button {
+        background-color: #000000; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    a.button:hover {
+        background-color: #ADD8E6;
+        color:#000000
+    }
+</style>
+</head>
+<body>
+<h2>Select the type of graph:</h2>
+<div class="button-container">
+    <button onclick="drawEngineCapacityHistogram()">Engine Capacity Distribution</button>
+    <button onclick="drawHistogram()">Price Distribution</button>
+    <button onclick="drawScatterPlot()">Mileage vs Price</button>
+    <button onclick="drawBoxPlot()">Prices by Brand</button>
+</div>
+
+<div id="chart" style="width:100%; height:500px;"></div>
+
+<script>
+    let globalData = [];
+    
+    function loadData() {
+        Papa.parse("C://Users//edcs9//Desktop//pythonProject1interfata//detalii_masini_complet.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                globalData = results.data;
+                console.log("Data loaded:", globalData); // Debug: Log data to console
+            }
+        });
+    }
+
+
+
+    function drawEngineCapacityHistogram() {
+    var engineCapacity = globalData.map(row => parseFloat(row['Capacitatea motorului'].replace(/\s+/g, '')));
+
+    var data = [{
+        x: engineCapacity,
+        type: 'histogram',
+        marker: {
+            color: 'green'
+        }
+    }];
+
+    var layout = {
+        title: 'Distribution of Engine Capacity',
+        xaxis: {title: 'Engine Capacity (cm³)'},
+        yaxis: {title: 'Frequency'},
+        bargap: 0.05
+    };
+
+    Plotly.newPlot('chart', data, layout);
+}
+
+
+    function drawHistogram() {
+        var prices = globalData.map(function(row) {
+            return parseFloat(row['Preț'].replace(/\s+/g, ''));
+        });
+    
+        var data = [{
+            x: prices,
+            type: 'histogram',
+        }];
+        var layout = {title: 'Price Distribution', bargap: 0.05};
+        Plotly.newPlot('chart', data, layout);
+    }
+    
+    function drawScatterPlot() {
+        var prices = globalData.map(row => parseFloat(row['Preț'].replace(/\s+/g, '')));
+        var mileages = globalData.map(row => parseFloat(row['Kilometrajul'].replace(/ km|\s+/g, '')));
+    
+        var trace = {
+            x: mileages,
+            y: prices,
+            mode: 'markers',
+            type: 'scatter',
+            marker: {size: 8}
+        };
+        var layout = {title: 'Mileage vs Price', xaxis: {title: 'Mileage (km)'}, yaxis: {title: 'Price'}};
+        Plotly.newPlot('chart', [trace], layout);
+    }
+    
+    function drawBoxPlot() {
+        var brands = {};
+        globalData.forEach(function(row) {
+            var brand = row['Marca'];
+            var price = parseFloat(row['Preț'].replace(/\s+/g, ''));
+            if (!brands[brand]) {
+                brands[brand] = [];
+            }
+            brands[brand].push(price);
+        });
+    
+        var data = Object.keys(brands).map(function(key) {
+            return {
+                y: brands[key],
+                type: 'box',
+                name: key
+            };
+        });
+        var layout = {title: 'Prices by Brand'};
+        Plotly.newPlot('chart', data, layout);
+    }
+    function loadData() {
+        fetch('/get-csv-data')
+        .then(response => response.json())
+        .then(data => {
+            globalData = data;
+            console.log("Data loaded:", globalData); // Debug: Log data to console
+            // Call your Plotly graph functions here after data is loaded
+        })
+        .catch(error => console.error('Error loading data:', error));
+    }
+
+    window.onload = loadData; // Load data when the page is ready
+</script>
+
+<a href="{{ url_for('home') }}" class="button"><center>Back to menu</center></a>
+</body>
+</html>
